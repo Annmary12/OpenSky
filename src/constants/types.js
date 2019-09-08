@@ -3,4 +3,14 @@ export const userContants = {
   LOGIN_FAILURE: 'LOGIN_FAILURE'
 }
 
+export const statesContants = {
+  GET_STATES_SUCCESS: 'GET_STATES_SUCCESS',
+  GET_STATES_FAILURE: 'GET_STATES_FAILURE'
+}
+
+export const flightsContants = {
+  GET_FLIGHT_SUCCESS: 'GET_FLIGHT_SUCCESS',
+  GET_FLIGHT_FAILURE: 'GET_FLIGHT_FAILURE',
+}
+
 export const IS_REQUESTING = 'IS_REQUESTING';

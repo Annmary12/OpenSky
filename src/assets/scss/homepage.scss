@@ -2,4 +2,30 @@
   background: url("../images/login2.jpg") no-repeat;
   background-size: cover;
   height: 45vh;
+
+  &__logo {
+    color: white;
+    font-size: 30px;
+    padding: 20px;
+  }
+
+  &__title {
+    text-align: center;
+    padding-top: 20vh;
+    color: white;
+    font-size: 30px;
+    font-style: uppercase;
+  }
+
+  &__cards {
+    padding-top: 100px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center
+  }
+}
+.MuiCardMedia-root {
+  height: 300px !important;
 }

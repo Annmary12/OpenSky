@@ -1,19 +1,13 @@
 import React, { Component } from "react";
 
 // third party library
-import { compose } from "redux";
 import { connect } from "react-redux";
 
 //actions
 import { login } from "../store/modules/auth";
 
 // material ui
-import Container from "@material-ui/core/Container";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import { Container, Card, CardHeader, CardContent, TextField, Button } from "@material-ui/core";
 
 class LoginPage extends Component {
   constructor(props) {
