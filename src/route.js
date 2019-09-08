@@ -7,11 +7,12 @@ import { Route, Switch } from 'react-router-dom';
 // components
 import LoginPage from './pages/Login';
 import HomePage from './pages/Home';
+import AuthenticatedRoute from './components/AuthRoute';
 
 const Routes = () => (
   <Switch>
     <Route path="/login" component={LoginPage} />
-    <Route exact path="/open-sky" component={HomePage} />
+    <AuthenticatedRoute path="/" component={HomePage} />
   </Switch>
 )
 

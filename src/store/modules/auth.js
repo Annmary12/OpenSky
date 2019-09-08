@@ -20,7 +20,7 @@ export const login = userDetails => async (dispatch) => {
 
       dispatch(Success(userContants.LOGIN_SUCCESS, "Successfully Login"));
       dispatch(Request(IS_REQUESTING, false))
-      history.push("/open-sky");
+      history.push("/");
       return;
     }
 
