@@ -33,7 +33,6 @@ class LoginPage extends Component {
 
   render() {
     const { error, loading } = this.props;
-    console.log({error, loading})
     return (
       <div className="login">
         <div className="login__img"></div>

@@ -17,10 +17,8 @@ const columns = [
   },
   {
     id: 'density',
-    label: 'Density',
+    label: 'Number Of Airport Arrivals',
     minWidth: 120,
-    align: 'right',
-    format: value => value.toFixed(2),
   },
 ];
 
@@ -49,10 +47,10 @@ const useStyles = makeStyles({
   },
 });
 
-const TableComponent = () => {
+const TableComponent = ({ flights }) => {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   function handleChangePage(event, newPage) {
     setPage(newPage);
@@ -81,17 +79,24 @@ const TableComponent = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(row => {
+            {flights.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(flight => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                  {columns.map(column => {
-                    const value = row[column.id];
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {column.format && typeof value === 'number' ? column.format(value) : value}
-                      </TableCell>
-                    );
-                  })}
+                <TableRow hover role="checkbox" tabIndex={-1} key={flight.icao24}>
+                  <TableCell key="" align="">
+                    {flight.icao24}
+                  </TableCell>
+                  <TableCell key="" align="">
+                    {flight.estDepartureAirport}
+                  </TableCell>
+                  <TableCell key="" align="">
+                    {flight.estArrivalAirport}
+                  </TableCell>
+                  <TableCell key="" align="">
+                    {flight.callsign}
+                  </TableCell>
+                  <TableCell key="" align="">
+                    {flight.arrivalAirportCandidatesCount}
+                  </TableCell>
                 </TableRow>
               );
             })}

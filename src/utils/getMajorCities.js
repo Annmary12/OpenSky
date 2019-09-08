@@ -1,7 +1,6 @@
 export const majorCities = (states) => {
   const reduced = states.reduce((acc, curr) => {
     acc[curr[2]] ? acc[curr[2]]++ : acc[curr[2]] = 1
-    console.log(acc, '====')
     return acc
   }, {})
 

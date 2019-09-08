@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Card, CardActionArea, CardMedia, CardContent, Typography } from '@material-ui/core';
+import { Card, CardActionArea, CardMedia } from '@material-ui/core';
 
 // images
 import img from '../assets/images/login2.jpg'

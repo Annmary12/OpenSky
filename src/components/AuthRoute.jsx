@@ -26,9 +26,7 @@ const handleRender = Component => (props) => {
 };
 
 const AuthenticatedRoute = ({ component: Component, ...rest }) => ((
-  // <div className="dynamic-content container">
-    <Route { ...rest } render={handleRender(Component)} />
-  // </div>
+  <Route { ...rest } render={handleRender(Component)} />
 ));
 
 export default AuthenticatedRoute;

@@ -10,7 +10,6 @@ export const getStates = () => async (dispatch, getState, http) => {
     dispatch(Success(statesContants.GET_STATES_SUCCESS, states))
     dispatch(Request(IS_REQUESTING, false));
   } catch(error) {
-    console.log(error)
     dispatch(Failure(statesContants.GET_STATES_SUCCESS, error))
     dispatch(Request(IS_REQUESTING, false));
 

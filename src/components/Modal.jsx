@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     outline: 'none',
     position:'absolute',
     top:'10%',
-    left:'10%',
+    // left:'10%',
     overflow:'scroll',
     height:'100%',
     display:'block',

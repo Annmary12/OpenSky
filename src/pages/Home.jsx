@@ -7,13 +7,18 @@ import { Container, Grid, CircularProgress } from "@material-ui/core";
 // components
 import Card from "../components/Card";
 import Modal from "../components/Modal";
-import Table from '../components/Table';
+import Table from "../components/Table";
+import TimePicker from "../components/TimePicker";
 
 // actions
-import { getStates } from '../store/modules/states';
+import {
+  getFlights,
+  getDepartingFlights,
+  getArrivingFlights
+} from "../store/modules/flights";
 
 // utils
-import { majorCities } from '../utils/getMajorCities';
+import { majorCities } from "../utils/getMajorCities";
 
 class Home extends Component {
   constructor(props) {
@@ -21,12 +26,12 @@ class Home extends Component {
 
     this.state = {
       majorCities: [],
-      isOpen: false,
-    }
+      isOpen: false
+    };
   }
 
   componentDidMount() {
-    this.props.getStates();
+    this.props.getFlights();
   }
 
   async componentDidUpdate(prevProps) {
@@ -34,68 +39,88 @@ class Home extends Component {
       const states = await majorCities(this.props.allStates);
       this.setState({
         majorCities: states
-      })
+      });
     }
   }
 
-  toggleModal = () => {
-    this.setState({ isOpen: !this.state.isOpen })
-  }
+  toggleModal = city => () => {
+    this.setState({ isOpen: !this.state.isOpen }, () => {
+      if (this.state.isOpen) {
+        this.props.getArrivingFlights(city);
+        this.props.getDepartingFlights(city);
+      }
+    });
+  };
 
   handleCloseModal = () => {
-    this.setState({ isOpen: false })
-  }
+    this.setState({ isOpen: false });
+  };
 
   render() {
-    console.log(this.state)
-    const { majorCities } = this.state;
+    const { flights, arrivingFlights, departingFlights } = this.props;
 
     return (
       <div className="homepage">
-      <div className="homepage__logo">OpenSky</div>
-      <Container>
-        <h3 className="homepage__title">
-          Find realtime info of all flights around the world!!!
-        </h3>
-        <div className="homepage__cards">
-          <h3>Major Cities with heavy traffic</h3>
-          { this.props.loading && <CircularProgress color="secondary" /> }
-          <Grid container spacing={4} xs={10} className="cards">
-            { majorCities.length >= 1 && majorCities.map(city => (
-              <Grid item xs={4} onClick={this.toggleModal}>
-                <Card name={city}/>
-              </Grid>
-            ))}
-          </Grid>
-        </div>
-      </Container>
+        <div className="homepage__logo">OpenSky</div>
+        <Container>
+          <h3 className="homepage__title">
+            Find realtime info of all flights around the world!!!
+          </h3>
+          <div className="homepage__cards">
+            <h3>Major Cities with heavy traffic</h3>
+            {this.props.loading && <CircularProgress color="secondary" />}
+            <Grid container spacing={4} xs={10} className="cards">
+              {flights.length >= 1 &&
+                flights.map((city, index) => (
+                  <Grid
+                    item
+                    xs={4}
+                    onClick={this.toggleModal(city)}
+                    key={index}
+                  >
+                    <Card name={city.estDepartureAirport} />
+                  </Grid>
+                ))}
+            </Grid>
+          </div>
+        </Container>
 
-      <Modal
-        open={ this.state.isOpen }
-        handleClose={ this.handleCloseModal }
-        title="Title"
-      >
-        <h2>Departing Flights</h2>
-        <Table />
+        <Modal
+          open={this.state.isOpen}
+          handleClose={this.handleCloseModal}
+          title="Flights"
+        >
+          <div>
+            <TimePicker />
+          </div>
 
-        <h2>Arriving Flights</h2>
-        <Table />
-      </Modal>
-    </div>
-    )
+          <h2>Arriving Flights</h2>
+          <Table flights={arrivingFlights} />
+
+          <h2>Departing Flights</h2>
+          <Table flights={departingFlights} />
+        </Modal>
+      </div>
+    );
   }
 }
 
 export const mapStateToProps = state => {
   return {
-    allStates: state.states.data,
-    loading: state.states.isLoading,
-    // error: state.auth.error
-  }
+    flights: state.flights.data,
+    loading: state.flights.isLoading,
+    arrivingFlights: state.flights.arrivingFlights,
+    departingFlights: state.flights.departingFlights
+  };
 };
 
 export const mapDispatchToProps = dispatch => ({
-  getStates: () => dispatch(getStates())
+  getFlights: () => dispatch(getFlights()),
+  getDepartingFlights: flight => dispatch(getDepartingFlights(flight)),
+  getArrivingFlights: flight => dispatch(getArrivingFlights(flight))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Home);

@@ -3,10 +3,12 @@ import { combineReducers } from 'redux';
 // reducers
 import auth from './modules/auth';
 import states from './modules/states';
+import flights from './modules/flights';
 
 const appReducer = combineReducers({
   auth,
-  states
+  states,
+  flights
 });
 
 const rootReducer = (state, action) => {
