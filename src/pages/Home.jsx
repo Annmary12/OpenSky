@@ -20,6 +20,9 @@ import {
 // utils
 import { majorCities } from "../utils/getMajorCities";
 
+// images
+import images from '../utils/images';
+
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -43,11 +46,11 @@ class Home extends Component {
     }
   }
 
-  toggleModal = city => () => {
+  toggleModal = flight => () => {
     this.setState({ isOpen: !this.state.isOpen }, () => {
       if (this.state.isOpen) {
-        this.props.getArrivingFlights(city);
-        this.props.getDepartingFlights(city);
+        this.props.getArrivingFlights(flight);
+        this.props.getDepartingFlights(flight);
       }
     });
   };
@@ -57,7 +60,7 @@ class Home extends Component {
   };
 
   render() {
-    const { flights, arrivingFlights, departingFlights } = this.props;
+    const { flights, arrivingFlights, departingFlights, loading } = this.props;
 
     return (
       <div className="homepage">
@@ -68,7 +71,7 @@ class Home extends Component {
           </h3>
           <div className="homepage__cards">
             <h3>Major Cities with heavy traffic</h3>
-            {this.props.loading && <CircularProgress color="secondary" />}
+            {loading && <CircularProgress color="secondary" />}
             <Grid container spacing={4} xs={10} className="cards">
               {flights.length >= 1 &&
                 flights.map((city, index) => (
@@ -78,7 +81,7 @@ class Home extends Component {
                     onClick={this.toggleModal(city)}
                     key={index}
                   >
-                    <Card name={city.estDepartureAirport} />
+                    <Card name={city.estDepartureAirport} image={images[index]}/>
                   </Grid>
                 ))}
             </Grid>
@@ -95,10 +98,20 @@ class Home extends Component {
           </div>
 
           <h2>Arriving Flights</h2>
-          <Table flights={arrivingFlights} />
+          { loading
+            ? <CircularProgress color="secondary" />
+            : arrivingFlights.length <= 0
+              ? <div> No Arriving Flight </div>
+              :<Table flights={arrivingFlights} />
+          }
+
 
           <h2>Departing Flights</h2>
-          <Table flights={departingFlights} />
+          { loading
+            ? <CircularProgress color="secondary" /> 
+            : departingFlights.length <= 0
+              ? <div> No Departing Flight </div>
+              : <Table flights={departingFlights} /> }
         </Modal>
       </div>
     );

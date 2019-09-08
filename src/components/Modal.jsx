@@ -13,10 +13,9 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(2, 4, 3),
     outline: 'none',
     position:'absolute',
-    top:'10%',
-    // left:'10%',
-    overflow:'scroll',
-    height:'100%',
+    top:'5%',
+    overflowY:'scroll',
+    height:'80%',
     display:'block',
   },
 }));

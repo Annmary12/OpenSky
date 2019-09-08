@@ -5,12 +5,12 @@ import { Card, CardActionArea, CardMedia } from '@material-ui/core';
 // images
 import img from '../assets/images/login2.jpg'
 
-const CardComponent = ({ name}) => (
+const CardComponent = ({ name, image}) => (
   <Card className='card'>
       <CardActionArea>
         <CardMedia
           className=""
-          image={img}
+          image={image}
           title={name}
         />
       </CardActionArea>
