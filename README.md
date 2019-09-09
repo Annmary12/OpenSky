@@ -11,10 +11,12 @@ OpenSky is a free service, that shows a near-realtime information of all flights
 * Users can view latest flights
 * Users can view departing flights
 * Users can view arriving flights
+* Users can filter flights based on x time
 
 ## Technology Stack Used
 * React a javascript library for building user interfaces
 * Redux a predictable state container for javascript apps.
+* Material UI
 
 ## Project Structure
 
