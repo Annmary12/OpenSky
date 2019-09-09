@@ -58,6 +58,7 @@ class LoginPage extends Component {
                 fullWidth
                 margin="normal"
                 variant="outlined"
+                type="password"
                 name="password"
                 onChange={this.handleChange}
               />

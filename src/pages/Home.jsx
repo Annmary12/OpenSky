@@ -9,6 +9,7 @@ import Card from "../components/Card";
 import Modal from "../components/Modal";
 import Table from "../components/Table";
 import TimePicker from "../components/TimePicker";
+import moment from 'moment';
 
 // actions
 import {
@@ -29,7 +30,12 @@ class Home extends Component {
 
     this.state = {
       majorCities: [],
-      isOpen: false
+      isOpen: false,
+      fromDate: new Date(),
+      toDate: new Date(),
+      flight: {},
+      arrivingFlights: [],
+      departingFlights: []
     };
   }
 
@@ -44,13 +50,21 @@ class Home extends Component {
         majorCities: states
       });
     }
+
+    if (this.props.arrivingFlights !== prevProps.arrivingFlights || this.props.departingFlights !== prevProps.departingFlights) {
+      const { arrivingFlights, departingFlights } = this.props;
+      this.setState({
+        arrivingFlights,
+        departingFlights
+      })
+    }
   }
 
   toggleModal = flight => () => {
-    this.setState({ isOpen: !this.state.isOpen }, () => {
+    this.setState({ isOpen: !this.state.isOpen, flight }, async() => {
       if (this.state.isOpen) {
-        this.props.getArrivingFlights(flight);
-        this.props.getDepartingFlights(flight);
+        await this.props.getArrivingFlights(flight);
+        await this.props.getDepartingFlights(flight);
       }
     });
   };
@@ -59,8 +73,30 @@ class Home extends Component {
     this.setState({ isOpen: false });
   };
 
+  handleDateChangeTo = (date) =>  {
+    this.setState({
+      toDate: date
+    })
+  }
+
+  handleDateChangeFrom = (date) =>  {
+    this.setState({
+      fromDate: date
+    })
+  }
+
+  filterFlights = async() => {
+    const { flight, toDate, fromDate } = this.state;
+    const begin = moment(fromDate).format('X');
+    const end = moment(toDate).format('X');
+
+    await this.props.getArrivingFlights(flight, begin, end);
+    await this.props.getDepartingFlights(flight, begin, end);
+  }
+
   render() {
-    const { flights, arrivingFlights, departingFlights, loading } = this.props;
+    const { flights, loading } = this.props;
+    const { arrivingFlights, departingFlights } = this.state;
 
     return (
       <div className="homepage">
@@ -94,10 +130,16 @@ class Home extends Component {
           title="Flights"
         >
           <div>
-            <TimePicker />
+            <TimePicker
+              handleDateChangeTo={this.handleDateChangeTo}
+              toDate={this.state.toDate}
+              fromDate={this.state.fromDate}
+              handleDateChangeFrom={this.handleDateChangeFrom}
+              handleFilter={this.filterFlights}
+              />
           </div>
 
-          <h2>Arriving Flights</h2>
+          <h2 className="flight-title">Arriving Flights</h2>
           { loading
             ? <CircularProgress color="secondary" />
             : arrivingFlights.length <= 0
@@ -106,7 +148,7 @@ class Home extends Component {
           }
 
 
-          <h2>Departing Flights</h2>
+          <h2 className="flight-title">Departing Flights</h2>
           { loading
             ? <CircularProgress color="secondary" /> 
             : departingFlights.length <= 0
@@ -129,8 +171,8 @@ export const mapStateToProps = state => {
 
 export const mapDispatchToProps = dispatch => ({
   getFlights: () => dispatch(getFlights()),
-  getDepartingFlights: flight => dispatch(getDepartingFlights(flight)),
-  getArrivingFlights: flight => dispatch(getArrivingFlights(flight))
+  getDepartingFlights: (flight, begin, end) => dispatch(getDepartingFlights(flight, begin, end)),
+  getArrivingFlights: (flight, begin, end) => dispatch(getArrivingFlights(flight, begin, end))
 });
 
 export default connect(

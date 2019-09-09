@@ -1,63 +1,81 @@
-import 'date-fns';
-import React from 'react';
-import Grid from '@material-ui/core/Grid';
-import DateFnsUtils from '@date-io/date-fns';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import "date-fns";
+import React from "react";
+import Grid from "@material-ui/core/Grid";
+import DateFnsUtils from "@date-io/date-fns";
 
-const TimePicker = () => {
-  const [selectedDate, setSelectedDate] = React.useState(new Date('2014-08-18T21:11:54'));
+import SnoozeIcon from "@material-ui/icons/Snooze";
+import AlarmIcon from "@material-ui/icons/AddAlarm";
+import { IconButton, InputAdornment, Button } from "@material-ui/core";
+import { DateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 
-  function handleDateChange(date) {
-    console.log(date, '====')
-    setSelectedDate(date);
-  }
-
+const TimePicker = ({
+  handleDateChangeFrom,
+  toDate,
+  fromDate,
+  handleDateChangeTo,
+  handleFilter
+}) => {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
-      <Grid container justify="space-around">
-        <KeyboardDatePicker
-          disableToolbar
-          variant="inline"
-          format="MM/dd/yyyy"
-          margin="normal"
-          id="date-picker-inline"
-          label="Date"
-          value={selectedDate}
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change date',
-          }}
-        />
-        <KeyboardTimePicker
-          margin="normal"
-          id="time-picker"
-          label="Time"
-          value={selectedDate}
-          name="fromTime"
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change time',
-          }}
-        />
-      
-        <KeyboardTimePicker
-          margin="normal"
-          id="time-picker"
-          label="Time"
-          value={selectedDate}
-          name="fromTime"
-          onChange={handleDateChange}
-          KeyboardButtonProps={{
-            'aria-label': 'change time',
-          }}
-        />
+      <Grid container justify="space-between">
+        <Grid item xs={4}>
+          <DateTimePicker
+            autoOk
+            disableFuture
+            hideTabs
+            label="From"
+            ampm={true}
+            value={fromDate}
+            onChange={handleDateChangeFrom}
+            allowKeyboardControl={false}
+            leftArrowIcon={<AlarmIcon />}
+            leftArrowButtonProps={{ "aria-label": "Prev month" }}
+            rightArrowButtonProps={{ "aria-label": "Next month" }}
+            rightArrowIcon={<SnoozeIcon />}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton>
+                    <AlarmIcon />
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <DateTimePicker
+            autoOk
+            disableFuture
+            hideTabs
+            label="To"
+            ampm={true}
+            value={toDate}
+            onChange={handleDateChangeTo}
+            allowKeyboardControl={false}
+            leftArrowIcon={<AlarmIcon />}
+            leftArrowButtonProps={{ "aria-label": "Prev month" }}
+            rightArrowButtonProps={{ "aria-label": "Next month" }}
+            rightArrowIcon={<SnoozeIcon />}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton>
+                    <AlarmIcon />
+                  </IconButton>
+                </InputAdornment>
+              )
+            }}
+          />
+        </Grid>
+        <Grid item xs={4}>
+          <Button variant="outlined" color="primary" fullWidth type="submit" onClick={handleFilter} className="filterButton">
+            Filter
+          </Button>
+        </Grid>
       </Grid>
     </MuiPickersUtilsProvider>
   );
-}
+};
 
 export default TimePicker;

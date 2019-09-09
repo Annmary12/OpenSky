@@ -64,22 +64,22 @@ const TableComponent = ({ flights }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {flights.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map(flight => {
+            {flights.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((flight, index) => {
               return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={flight.icao24}>
-                  <TableCell key="" align="">
+                <TableRow hover role="checkbox" tabIndex={-1} key={index}>
+                  <TableCell>
                     {flight.icao24}
                   </TableCell>
-                  <TableCell key="" align="">
+                  <TableCell>
                     {flight.estDepartureAirport}
                   </TableCell>
-                  <TableCell key="" align="">
+                  <TableCell>
                     {flight.estArrivalAirport}
                   </TableCell>
-                  <TableCell key="" align="">
+                  <TableCell>
                     {flight.callsign}
                   </TableCell>
-                  <TableCell key="" align="">
+                  <TableCell>
                     {flight.arrivalAirportCandidatesCount}
                   </TableCell>
                 </TableRow>

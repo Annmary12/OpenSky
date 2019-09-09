@@ -17,11 +17,13 @@ export const getFlights = () => async (dispatch, getState, http) => {
   }
 }
 
-export const getDepartingFlights = (flight) => async (dispatch, getState, http) => {
+export const getDepartingFlights = (flight, begin = null, end = null) => async (dispatch, getState, http) => {
   dispatch(Request(IS_REQUESTING, true));
 
   try {
-    const departingFlights = await http.get(`flights/departure?airport=${flight.estDepartureAirport}&begin=1517227200&end=1517230800`);
+    const beginTime = begin ? begin : 1517227200;
+    const endTime = end ? end : 1517230800;
+    const departingFlights = await http.get(`flights/departure?airport=${flight.estDepartureAirport}&begin=${beginTime}&end=${endTime}`);
 
     dispatch(Success(flightsContants.GET_DEPARTING_FLIGHT_SUCCESS, departingFlights.data))
     dispatch(Request(IS_REQUESTING, false));
@@ -32,12 +34,12 @@ export const getDepartingFlights = (flight) => async (dispatch, getState, http) 
   }
 }
 
-export const getArrivingFlights = (flight) => async (dispatch, getState, http) => {
+export const getArrivingFlights = (flight, begin = null, end = null) => async (dispatch, getState, http) => {
   dispatch(Request(IS_REQUESTING, true));
-
   try {
-
-    const arrivalFlights = await http.get(`flights/departure?airport=${flight.estArrivalAirport}&begin=1517227200&end=1517230800`);
+    const beginTime = begin ? begin : 1517227200;
+    const endTime = end ? end : 1517230800;
+    const arrivalFlights = await http.get(`flights/arrival?airport=${flight.estArrivalAirport}&begin=${beginTime}&end=${endTime}`);
 
     dispatch(Success(flightsContants.GET_ARRIVING_FLIGHT_SUCCESS, arrivalFlights.data))
     dispatch(Request(IS_REQUESTING, false));
@@ -74,6 +76,8 @@ export const reducer = (state = flightInitialState, action) => {
     case flightsContants.GET_FLIGHT_FAILURE:
       return {
         ...state,
+        arrivingFlights: [],
+        departingFlights: [],
         error: action.error
       };
     case IS_REQUESTING:
