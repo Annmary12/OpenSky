@@ -1,6 +1,7 @@
 import { flightsContants, IS_REQUESTING } from '../../constants/types';
 import { Request, Success, Failure } from "../../constants/action";
 import { latestFlight } from '../../utils/getLatestFlights';
+import moment from 'moment';
 
 export const getFlights = () => async (dispatch, getState, http) => {
   dispatch(Request(IS_REQUESTING, true));
@@ -21,8 +22,9 @@ export const getDepartingFlights = (flight, begin = null, end = null) => async (
   dispatch(Request(IS_REQUESTING, true));
 
   try {
-    const beginTime = begin ? begin : 1517227200;
-    const endTime = end ? end : 1517230800;
+    const beginTime = begin ? begin : moment().subtract(1,'d').format('X');
+    const endTime = end ? end : moment().format('X');
+
     const departingFlights = await http.get(`flights/departure?airport=${flight.estDepartureAirport}&begin=${beginTime}&end=${endTime}`);
 
     dispatch(Success(flightsContants.GET_DEPARTING_FLIGHT_SUCCESS, departingFlights.data))
@@ -37,8 +39,8 @@ export const getDepartingFlights = (flight, begin = null, end = null) => async (
 export const getArrivingFlights = (flight, begin = null, end = null) => async (dispatch, getState, http) => {
   dispatch(Request(IS_REQUESTING, true));
   try {
-    const beginTime = begin ? begin : 1517227200;
-    const endTime = end ? end : 1517230800;
+    const beginTime = begin ? begin : moment().subtract(1,'d').format('X');
+    const endTime = end ? end : moment().format('X');
     const arrivalFlights = await http.get(`flights/arrival?airport=${flight.estArrivalAirport}&begin=${beginTime}&end=${endTime}`);
 
     dispatch(Success(flightsContants.GET_ARRIVING_FLIGHT_SUCCESS, arrivalFlights.data))

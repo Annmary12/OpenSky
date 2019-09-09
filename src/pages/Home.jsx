@@ -61,10 +61,10 @@ class Home extends Component {
   }
 
   toggleModal = flight => () => {
-    this.setState({ isOpen: !this.state.isOpen, flight }, async() => {
+    this.setState({ isOpen: !this.state.isOpen, flight }, () => {
       if (this.state.isOpen) {
-        await this.props.getArrivingFlights(flight);
-        await this.props.getDepartingFlights(flight);
+        this.props.getArrivingFlights(flight);
+        this.props.getDepartingFlights(flight);
       }
     });
   };
@@ -85,13 +85,13 @@ class Home extends Component {
     })
   }
 
-  filterFlights = async() => {
+  filterFlights = () => {
     const { flight, toDate, fromDate } = this.state;
     const begin = moment(fromDate).format('X');
     const end = moment(toDate).format('X');
 
-    await this.props.getArrivingFlights(flight, begin, end);
-    await this.props.getDepartingFlights(flight, begin, end);
+    this.props.getArrivingFlights(flight, begin, end);
+    this.props.getDepartingFlights(flight, begin, end);
   }
 
   render() {
@@ -136,6 +136,7 @@ class Home extends Component {
               fromDate={this.state.fromDate}
               handleDateChangeFrom={this.handleDateChangeFrom}
               handleFilter={this.filterFlights}
+              isLoading={loading}
               />
           </div>
 

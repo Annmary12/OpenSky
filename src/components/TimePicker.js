@@ -13,7 +13,8 @@ const TimePicker = ({
   toDate,
   fromDate,
   handleDateChangeTo,
-  handleFilter
+  handleFilter,
+  isLoading
 }) => {
   return (
     <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -70,7 +71,7 @@ const TimePicker = ({
         </Grid>
         <Grid item xs={4}>
           <Button variant="outlined" color="primary" fullWidth type="submit" onClick={handleFilter} className="filterButton">
-            Filter
+            {isLoading ? 'Filtering...' : 'Filter'}
           </Button>
         </Grid>
       </Grid>
