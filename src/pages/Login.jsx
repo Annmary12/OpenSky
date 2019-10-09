@@ -21,18 +21,22 @@ class LoginPage extends Component {
 
   handleChange = (event) => {
     const { name, value } = event.target;
+
     this.setState({
       [name]: value
     })
   }
 
   handleSubmit = (event) => {
+
     event.preventDefault();
     this.props.login(this.state)
+
   }
 
   render() {
     const { error, loading } = this.props;
+
     return (
       <div className="login">
         <div className="login__img"></div>
